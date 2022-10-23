@@ -1,39 +1,14 @@
-
-<!-- Toolbar -->
 <div class="toolbar" role="banner">
-  <a routerLink='/albums' >
-
-
-    <button mat-icon-button (click) = "onAlbum()">
-      <mat-icon>library_music</mat-icon>
-    </button>
-
-  </a>
-
-
-</div>
-
-<div class="bg-img">
-
-
-  <div class="content">
-
-    <input type="file" class="file-upload" onchange="console.log(event.target.files)">
-
-  <!--
-    <input type="file" class="file-input"
-        (change)="ajoutMusique($event)" #fileUpload>
-
-    <div class="file-upload">
-
-      {{nomFichier || "No file uploaded yet."}}
-
-        <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
-            <mat-icon>attach_file</mat-icon>
-        </button>
-    </div>
-  -->
-  </div>
+  <span style="margin-left:10px">
+    <a [routerLink]="['/']">
+      <mat-icon style="color:coral">home</mat-icon>
+    </a>
+  </span>
+  <span style="margin-left:10px">
+    <a [routerLink]="['/albums']">
+      <mat-icon style="color:coral">library_music</mat-icon>
+    </a>
+  </span>
 </div>
 
 <router-outlet></router-outlet>
