@@ -1,0 +1,41 @@
+<div class="bg-img">
+
+
+
+  <div class="content">
+    <!--
+    <ngx-audio-player [playlist]="msaapPlaylist" [displayTitle]="msaapDisplayTitle" [autoPlay]="false"
+    muted="muted" [displayPlaylist]="msaapDisplayPlayList"
+        [displayVolumeControls]="msaapDisplayVolumeControls" [displayRepeatControls]="msaapDisplayRepeatControls"
+        [disablePositionSlider]="msaapDisablePositionSlider" [displayArtist]="msaapDisplayArtist"
+        [displayDuration]="msaapDisplayDuration" [expanded]="true"></ngx-audio-player>
+    -->
+    
+
+    <div class="list-music" *ngFor="let music of list_musics">
+      <div class="music">
+        {{music.musicName}}
+        <mat-icon class="music-button" (click)="music.playMusic(music)">play_circle_outline</mat-icon>
+        <mat-icon class="music-button" (click)="music.stopMusic()">stop_circle_outline</mat-icon>
+        <!--<mat-icon class="music-button" (click)="removeMusic()">close</mat-icon>-->
+      </div>
+    </div>
+
+
+
+    <div class="add-music">
+      <input type="file" class="file-input" (change)="addMusic($any($event).target.files)" #fileUpload>
+
+      <div class="file-upload">
+
+        {{fileName || "Aucun fichier chargé."}}
+        <button mat-button color="primary" class="upload-btn"
+                (click)="fileUpload.click()">
+          <mat-icon>attach_file</mat-icon>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</div>

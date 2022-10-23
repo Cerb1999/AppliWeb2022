@@ -1,0 +1,44 @@
+.bg-img {
+  height: 100%;
+  width: 100%;
+  background-image: url('../../assets/images/casque.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  margin: 60px auto 0px;
+  max-width: 980px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add-music {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.music {
+  box-shadow: orange 4px 4px 4px;
+  display: flex;
+  padding: 40px;
+  background-color: lightyellow;
+  border-radius: 10px;
+  background-size: cover;
+}
+
+.music-button {
+  color: orange;
+  cursor: pointer;
+}
+
+.list-music {
+  position: center;
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 5px;
+  padding: 10px;
+}
