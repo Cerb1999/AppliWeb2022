@@ -12,7 +12,7 @@ export const environment = {
       OneMusic: '/musics/:id',
       randomMusicNoAlbum: '/musics/random',
       allMusicsOneAlbum: '/musics/albums/:id',
-      randomMusicOneAlbum: 'musics/random/albums/:id',
+      randomMusicOneAlbum: '/musics/random/albums/:id',
     },
   },
 };
