@@ -11,7 +11,7 @@ import { Music } from '../shared/types/musics.types';
 })
 
 export class MusicComponent implements OnInit {
-  musicName: string = "";
+  //musicName: string = "";
   audio: any;
   //private readonly _delete$: EventEmitter<MusicComponent>;
 
@@ -47,8 +47,8 @@ export class MusicComponent implements OnInit {
       });
   }
 
-  get music(): MusicComponent {
-    return this;
+  get music(): Music {
+    return this._music;
   }
 
   get my_music(): Music {
@@ -73,21 +73,21 @@ export class MusicComponent implements OnInit {
       next: (music: Music) => this._music = music});
   }
 
-  update(music : Music): Observable<Music> {
+  update(music: Music): Observable<Music> {
     return this._musicService.update(music.id, music);
   }
 
   navigate(id: string | undefined): void {
     this._router.navigate([ '/albums', id ]);
   }
-
+  /*
   newMusic(musicName: string): MusicComponent {
     this.musicName = musicName.substring(0, musicName.length - 4);
     return this;
   }
-
-  playMusic(music: MusicComponent) {
-    let musicURL = "../../assets/musiques/" + music.musicName + ".mp3";
+  */
+  playMusic(music: Music) {
+    let musicURL = "../../assets/musiques/" + music.name + ".mp3";
     this.audio.src = musicURL;
     this.audio.load();
     this.audio.play();

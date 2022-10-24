@@ -11,9 +11,12 @@ import { Music } from '../shared/types/musics.types';
 })
 export class MusicsComponent implements OnInit {
   private _musics: Music[];
+  audio: any;
+
 
   constructor(private _router: Router, private _musicService: MusicService) {
-    this._musics = [];  
+    this._musics = [];
+    this.audio = new Audio();
   }
 
   ngOnInit(): void {
@@ -39,5 +42,17 @@ export class MusicsComponent implements OnInit {
     this._musicService
       .delete(music.id as string)
       .subscribe((id: string) => this._musics = this._musics.filter((p: Music) => p.id !== id));
+  }
+
+  playMusic(music: Music) {
+    let musicURL = "../../../../data/" + music.name + ".mp3";
+    this.audio.src = musicURL;
+    this.audio.load();
+    this.audio.play();
+  }
+
+  stopMusic() {
+    this.audio.pause();
+    this.audio.currentTime = 0;
   }
 }

@@ -1,5 +1,5 @@
 export type Music = {
-  id: string;
+  id?: string;
   name: string;
-  addedToApiDate: string;
+  addedToApiDate?: string;
 };

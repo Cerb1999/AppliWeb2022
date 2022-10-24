@@ -12,11 +12,15 @@
     -->
     
 
-    <div class="list-music" *ngFor="let music of list_musics">
+    <div class="list-music" *ngFor="let music of _musics">
       <div class="music">
-        {{music.musicName}}
-        <mat-icon class="music-button" (click)="music.playMusic(music)">play_circle_outline</mat-icon>
-        <mat-icon class="music-button" (click)="music.stopMusic()">stop_circle_outline</mat-icon>
+        <div class="music-name">
+          {{music.name}}
+        </div>
+        
+        <mat-icon class="music-button" (click)="playMusic(music)">play_circle_outline</mat-icon>
+
+        <mat-icon class="music-button" (click)="stopMusic(music)">stop_circle_outline</mat-icon>
         <!--<mat-icon class="music-button" (click)="removeMusic()">close</mat-icon>-->
       </div>
     </div>
@@ -24,17 +28,19 @@
 
 
     <div class="add-music">
-      <input type="file" class="file-input" (change)="addMusic($any($event).target.files)" #fileUpload>
+      <!--<label for="fichier">Ajouter une musique (.mp3)</label>-->
+      <input type="file" id="fichier" accept=".mp3" class="file-input" (change)="_add($any($event).target.files)" #fileUpload>
+      <!--
+  <div class="file-upload">
 
-      <div class="file-upload">
+    {{fileName || "Aucun fichier chargé."}}
+    <button mat-button color="primary" class="upload-btn"
+            (click)="fileUpload.click()">
+      <mat-icon>attach_file</mat-icon>
+    </button>
 
-        {{fileName || "Aucun fichier chargé."}}
-        <button mat-button color="primary" class="upload-btn"
-                (click)="fileUpload.click()">
-          <mat-icon>attach_file</mat-icon>
-        </button>
-
-      </div>
+  </div>
+    -->
     </div>
 
   </div>

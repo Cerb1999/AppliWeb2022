@@ -1,15 +1,17 @@
 .bg-img {
   height: 100%;
-  width: 100%;
+  //width: 100%;
   background-image: url('../../assets/images/casque.jpg');
   background-size: cover;
-  background-attachment: fixed;
-  overflow: hidden;
+  background-position: center;
+  background-repeat: no-repeat;
+  //background-attachment: fixed;
+  //overflow: hidden;
 }
 
 .content {
   display: flex;
-  margin: 60px auto 0px;
+  margin: 0px auto 0px;
   max-width: 980px;
   flex-direction: column;
   align-items: center;

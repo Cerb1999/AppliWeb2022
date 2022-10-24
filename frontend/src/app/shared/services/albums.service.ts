@@ -47,7 +47,7 @@ export class AlbumService {
     return this._http.post<Album>(this._backendURL.allAlbums, person, this._options());
   }
 
-  update(id: string, album: Album): Observable<any> {
+  update(id: string | undefined, album: Album): Observable<any> {
     return this._http.put<Album>(this._backendURL.oneAlbum.replace(':id', id), album, this._options());
   }
 

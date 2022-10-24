@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\scripts",
+    "\\src",
+    "\\src\\album",
+    "\\src\\album\\dao",
+    "\\src\\album\\dto",
+    "\\src\\album\\entities",
+    "\\src\\album\\schemas"
+  ],
+  "SelectedNode": "\\scripts\\init.mongo.js",
+  "PreviewInSolutionExplorer": false
+}
