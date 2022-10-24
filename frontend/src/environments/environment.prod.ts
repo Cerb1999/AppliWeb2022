@@ -5,7 +5,14 @@ export const environment = {
     host: 'localhost',
     port: '3000',
     endpoints: {
-      allHello: '/hello',
+      allAlbums: '/albums',
+      oneAlbum: '/albums/:id',
+      randomAlbum: 'albums/random',
+      allMusics: '/musics',
+      OneMusic: '/musics/:id',
+      randomMusicNoAlbum: '/musics/random',
+      allMusicsOneAlbum: 'musics/albums/:id',
+      randomMusicOneAlbum: 'musics/random/albums/:id',
     },
   },
 };

@@ -14,13 +14,17 @@ import { NgxAudioPlayerModule } from 'ngx-audio-player';
 import { HomeComponent } from './home/home.component';
 import { MusicComponent } from './music/music.component';
 import { FormsModule } from '@angular/forms';
+import { AlbumComponent } from './album/album.component';
+import { MusicsComponent } from './musics/musics.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AlbumsComponent,
     HomeComponent,
-    MusicComponent
+    MusicComponent,
+    AlbumComponent,
+    MusicsComponent
   ],
   imports: [
     BrowserModule,
