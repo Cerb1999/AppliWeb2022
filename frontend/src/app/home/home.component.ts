@@ -6,6 +6,8 @@ import { MusicComponent } from '../music/music.component';
 import { Music } from '../shared/types/musics.types';
 import { Observable } from 'rxjs';
 import { MusicService } from '../shared/services/musics.service';
+import { interval } from 'rxjs';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -53,6 +55,7 @@ export class HomeComponent implements OnInit {
   file: File | undefined;
   audio: any;
   id: number;
+
   
   //list_musics: MusicComponent[] = [];
 
@@ -148,9 +151,12 @@ export class HomeComponent implements OnInit {
       name: this.fileName
     };
     this._musics.push(music);
-    console.log(music.id);
-    return this._musicService.create(music as Music);
+    const create = this._musicService.create(music as Music);
+    create.subscribe();
+    return create;
   }
+
+
 
   delete(music: Music): void {
     this._musicService
