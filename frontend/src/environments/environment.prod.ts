@@ -7,11 +7,11 @@ export const environment = {
     endpoints: {
       allAlbums: '/albums',
       oneAlbum: '/albums/:id',
-      randomAlbum: 'albums/random',
+      randomAlbum: '/albums/random',
       allMusics: '/musics',
       OneMusic: '/musics/:id',
       randomMusicNoAlbum: '/musics/random',
-      allMusicsOneAlbum: 'musics/albums/:id',
+      allMusicsOneAlbum: '/musics/albums/:id',
       randomMusicOneAlbum: 'musics/random/albums/:id',
     },
   },
