@@ -5,11 +5,9 @@ let albums = db.getCollection('albums');
 albums.insertMany([
   {
     name: 'Lo-fi',
-    addedToApiDate: new Date(),
   },
   {
     name: 'Rap',
-    addedToApiDate: new Date(),
   }
 ]);
 
@@ -17,14 +15,17 @@ let lofi = albums.findOne({'name':'Lo-fi'});
 db.getCollection('musics').insertMany([
   {
     name: 'Lo-fi Type Beat - Lovely',
+    addedToApiDate: new Date(),
     albums: [lofi],
   },
   {
     name: 'LoFi Chillhop Bake A Pie by Lukrembo',
+    addedToApiDate: new Date(),
     albums: [lofi],
   },
   {
     name: 'lofi type beat “biscuit” by lukrembo',
+    addedToApiDate: new Date(),
     albums: [lofi],
   },
 ]);
