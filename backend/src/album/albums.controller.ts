@@ -127,15 +127,7 @@ export class AlbumController {
     @Param() params: HandlerParams,
     @Body() updateAlbumDto: UpdateAlbumDto,
   ): Observable<AlbumEntity> {
-    let old: string;
-    Logger.log(params.id);
-    Logger.log(this._albumService.findOne(params.id));
-    this._albumService.findOne(params.id)
-        .subscribe((value) => {
-            old = value.name; 
-        });
-    Logger.log(old);
-    return this._albumService.update(params.id, old, updateAlbumDto);
+    return this._albumService.update(params.id, updateAlbumDto);
   }
 
   @ApiNoContentResponse({

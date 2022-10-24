@@ -96,7 +96,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
         ),
       );
 
-    update = (id: string, old: string, album: UpdateAlbumDto): Observable<AlbumEntity> =>
+    update = (id: string, album: UpdateAlbumDto): Observable<AlbumEntity> =>
       this._albumDao.findById(id).pipe(
         catchError((e) => 
           throwError(() => new UnprocessableEntityException(e.message)),
