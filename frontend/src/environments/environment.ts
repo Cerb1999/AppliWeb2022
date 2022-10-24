@@ -11,8 +11,8 @@ export const environment = {
       allMusics: '/musics',
       oneMusic: '/musics/:id',
       randomMusicNoAlbum: '/musics/random',
-      allMusicsOneAlbum: 'musics/albums/:id',
-      randomMusicOneAlbum: 'musics/random/albums/:id',
+      allMusicsOneAlbum: '/musics/albums/:id',
+      randomMusicOneAlbum: '/musics/random/albums/:id',
     },
   },
 };
