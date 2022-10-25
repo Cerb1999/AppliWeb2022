@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, merge, mergeMap, Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { MusicService } from '../shared/services/musics.service';
 import { Music } from '../shared/types/musics.types';
 
@@ -17,12 +18,23 @@ export class MusicComponent implements OnInit {
 
   private _music: Music;
   private _isMusic: Boolean;
+  private _delete$: EventEmitter<Music>;
+  private readonly _backendURL: any;
+
   
   constructor(private _router: Router, private _musicService: MusicService, private _route: ActivatedRoute) {
+    this._backendURL = {};
+
+    // build backend base url
+    let baseUrl = `${environment.backend.protocol}://${environment.backend.host}`;
+    if (environment.backend.port) {
+      baseUrl += `:${environment.backend.port}`;
+    }
+
     this.audio = new Audio();
     this._music = {} as Music;
     this._isMusic = false;
-    //this._delete$ = new EventEmitter<MusicComponent>();
+    this._delete$ = new EventEmitter<Music>();
   }
 
   ngOnInit(): void {
@@ -51,10 +63,6 @@ export class MusicComponent implements OnInit {
     return this._music;
   }
 
-  get my_music(): Music {
-    return this._music;
-  }
-
   get isMusic(): Boolean {
     return this._isMusic;
   }
@@ -72,10 +80,11 @@ export class MusicComponent implements OnInit {
     .subscribe({
       next: (music: Music) => this._music = music});
   }
-
+  /*
   update(music: Music): Observable<Music> {
     return this._musicService.update(music.id, music);
   }
+  */
 
   navigate(id: string | undefined): void {
     this._router.navigate([ '/albums', id ]);
@@ -96,5 +105,18 @@ export class MusicComponent implements OnInit {
   stopMusic() {
     this.audio.pause();
     this.audio.currentTime = 0;
+  }
+
+  delete(music: Music): void {
+    this._delete$.emit(music);
+  }
+
+  @Input()
+  set person(music: Music) {
+    this._music = music;
+  }
+
+  @Output('deleteMusic') get delete$(): EventEmitter<Music> {
+    return this._delete$;
   }
 }

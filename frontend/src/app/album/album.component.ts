@@ -53,9 +53,10 @@ export class AlbumComponent implements OnInit {
     .subscribe({
       next: (album: Album) => this._album});
   }
-
+  /*
   update(album : Album): Observable<Album> {
     return this._albumService.update(album.id, album);
   }
+  */
 }
 

@@ -63,7 +63,7 @@ export class MusicService {
     return this._http.post<Music>(this._backendURL.allMusics, music, this._options());
   }
 
-  update(id: string | undefined, music: Music): Observable<any> {
+  update(id: string, music: Music): Observable<any> {
     return this._http.put<Music>(this._backendURL.oneMusic.replace(':id', id), music, this._options());
   }
 

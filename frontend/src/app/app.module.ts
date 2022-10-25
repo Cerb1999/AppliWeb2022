@@ -16,6 +16,7 @@ import { MusicComponent } from './music/music.component';
 import { FormsModule } from '@angular/forms';
 import { AlbumComponent } from './album/album.component';
 import { MusicsComponent } from './musics/musics.component';
+import { UpdateComponent } from './update/update.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MusicsComponent } from './musics/musics.component';
     HomeComponent,
     MusicComponent,
     AlbumComponent,
-    MusicsComponent
+    MusicsComponent,
+    UpdateComponent
   ],
   imports: [
     BrowserModule,

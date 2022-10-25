@@ -1,12 +1,14 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Track } from 'ngx-audio-player';
 import { MusicComponent } from '../music/music.component';
 import { Music } from '../shared/types/musics.types';
 import { Observable } from 'rxjs';
 import { MusicService } from '../shared/services/musics.service';
 import { interval } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 @Component({
   selector: 'app-home',
@@ -15,58 +17,36 @@ import { interval } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
 
-  /*
-  file : File | null = null;
-  nomFichier: string;
-  title: any;
-  msaapDisplayTitle = true;
-  msaapDisplayPlayList = true;
-  msaapPageSizeOptions = [2,4,6];
-  msaapDisplayVolumeControls = true;
-  msaapDisplayRepeatControls = true;
-  msaapDisplayArtist = false;
-  msaapDisplayDuration = false;
-  msaapDisablePositionSlider = true;
-    
-  // Material Style Advance Audio Player Playlist
-  msaapPlaylist: Track[] = [
-    {
-      title: 'Audio One Title',
-      link: 'Link to Audio One URL',
-      artist: 'Audio One Artist',
-      duration: 0
-    },
-    {
-      title: 'Audio Two Title',
-      link: 'Link to Audio Two URL',
-      artist: 'Audio Two Artist',
-      duration: 0
-    },
-    {
-      title: 'Audio Three Title',
-      link: 'Link to Audio Three URL',
-      artist: 'Audio Three Artist',
-      duration: 0
-    },
-  ];
-  */
-
   fileName: string = '';
   file: File | undefined;
   audio: any;
   id: number;
+  private readonly _delete$: EventEmitter<Music>;
 
   
-  //list_musics: MusicComponent[] = [];
+  list_musics: MusicComponent[] = [];
 
   _musics: Music[];
+  private readonly _backendURL: any;
 
   constructor(private route: Router, private http: HttpClient, private _musicService: MusicService) {
     this.fileName = "";
     this._musics = [];
     this.audio = new Audio();
     this.id = 0;
+    this._delete$ = new EventEmitter<Music>();
+
+    this._backendURL = {};
+    // build backend base url
+    let baseUrl = `${environment.backend.protocol}://${environment.backend.host}`;
+    if (environment.backend.port) {
+      baseUrl += `:${environment.backend.port}`;
+    }
+    // @ts-ignore
+    Object.keys(environment.backend.endpoints).forEach(k => this._backendURL[k] = `${baseUrl}${environment.backend.endpoints[k]}`);
   }
+
+  
 
   ngOnInit() {
     this._musicService
@@ -78,34 +58,6 @@ export class HomeComponent implements OnInit {
     return this._musics;
   }
   
-
-  addMusic(files: FileList) {
-    const target = event?.target as HTMLInputElement;
-    const file = target.files;
-
-    if (file) {
-
-      this.fileName = file[0].name;
-
-      const formData = new FormData();
-
-      formData.append("thumbnail", file[0]);
-
-      const upload$ = this.http.post("/api/thumbnail-upload", formData);
-
-      upload$.subscribe();
-    }
-    
-    //this.list_musics.push(new MusicComponent().newMusic(this.fileName));
-
-  }
-  /*
-  removeMusic(music: MusicComponent) {
-    this.list_musics.forEach((element, index) => {
-      if (element === music) delete this.list_musics[this.list_musics.indexOf(element)];
-    });
-  }
-  */
 
   playMusic(music: Music) {
     this._musics.forEach((element) => {
@@ -147,24 +99,40 @@ export class HomeComponent implements OnInit {
       
     }
     this.fileName = this.fileName.substring(0, this.fileName.length - 4); // nom fichier sans le format
+
     const music: Music = {
       name: this.fileName
     };
+    
     this._musics.push(music);
     const create = this._musicService.create(music as Music);
     create.subscribe();
+    this.http.post<Music>(this._backendURL.allPeople, music, { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) });
     return create;
+    
   }
 
-
-
   delete(music: Music): void {
+    
+    
     this._musicService
       .delete(music.id as string)
       .subscribe((id: string) => this._musics = this._musics.filter((p: Music) => p.id !== id));
-  }
 
-  mymusics(): Music[] {
-    return this._musics;
+    this.http
+      .delete(this._backendURL.oneMusic.replace(':id', music.id))
+      .subscribe({
+        next: () =>
+        (this._musics = this._musics.filter(
+          (m: Music) => m.id !== music.id
+        )),
+      });
+      
+
+    this._musics.forEach((element) => {
+      if (element === music) {
+        this._musics.splice(this._musics.indexOf(music), 1);
+      };
+    });
   }
 }

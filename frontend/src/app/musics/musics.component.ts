@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { MusicService } from '../shared/services/musics.service';
 import { Music } from '../shared/types/musics.types';
 
@@ -11,12 +12,21 @@ import { Music } from '../shared/types/musics.types';
 })
 export class MusicsComponent implements OnInit {
   private _musics: Music[];
-  audio: any;
+    private readonly _backendURL: any;
+  //audio: any;
 
 
   constructor(private _router: Router, private _musicService: MusicService) {
     this._musics = [];
-    this.audio = new Audio();
+    //this.audio = new Audio();
+    this._backendURL = {};
+    // build backend base url
+    let baseUrl = `${environment.backend.protocol}://${environment.backend.host}`;
+    if (environment.backend.port) {
+      baseUrl += `:${environment.backend.port}`;
+    }
+    // @ts-ignore
+    Object.keys(environment.backend.endpoints).forEach(k => this._backendURL[k] = `${baseUrl}${environment.backend.endpoints[k]}`);
   }
 
   ngOnInit(): void {
@@ -43,9 +53,9 @@ export class MusicsComponent implements OnInit {
       .delete(music.id as string)
       .subscribe((id: string) => this._musics = this._musics.filter((p: Music) => p.id !== id));
   }
-
+  /*
   playMusic(music: Music) {
-    let musicURL = "../../../../data/" + music.name + ".mp3";
+    let musicURL = "../../assets/musiques" + music.name + ".mp3";
     this.audio.src = musicURL;
     this.audio.load();
     this.audio.play();
@@ -55,4 +65,5 @@ export class MusicsComponent implements OnInit {
     this.audio.pause();
     this.audio.currentTime = 0;
   }
+  */
 }
