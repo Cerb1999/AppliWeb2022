@@ -3,13 +3,19 @@
     
     <div class="list-music" *ngFor="let music of _musics">
 
-        <div class="music">
-          <div class="music-name">
-              {{music.name}}
-          </div>
-
-
+      <div class="music">
+        <div class="music-name">
+          {{music.name}}
         </div>
+
+        <div class="my_buttons">
+          <mat-icon class="music-button" (click)="playMusic(music)">play_circle_outline</mat-icon>
+
+          <mat-icon class="music-button" (click)="stopMusic(music)">stop_circle_outline</mat-icon>
+          <mat-icon class="music-button" title="Delete" (click)="delete(music)">close</mat-icon>
+        </div>
+
+      </div>
 
     </div>
       

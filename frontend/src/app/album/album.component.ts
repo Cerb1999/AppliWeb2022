@@ -15,10 +15,12 @@ export class AlbumComponent implements OnInit {
   private _album: Album;
   private _isAlbum: Boolean;
   _musics: Music[] = [];
+  audio: any;
 
   constructor(private _router: Router, private _musicService: MusicService, private _albumService: AlbumService, private _route: ActivatedRoute) {
     this._album = {} as Album;
     this._isAlbum = false;
+    this.audio = new Audio();
   }
 
   ngOnInit(): void {
@@ -89,6 +91,42 @@ export class AlbumComponent implements OnInit {
       .subscribe({
         next: (musics: Music[]) => this._musics = musics
       });
+  }
+
+  playMusic(music: Music) {
+    this._musics.forEach((element) => {
+      if (element === music) {
+        let musicURL = "../../assets/musiques/" + music.name + ".mp3";
+        this.audio.src = musicURL;
+        this.audio.load();
+        this.audio.play();
+      };
+    });
+  }
+
+  stopMusic(music: Music) {
+    this._musics.forEach((element) => {
+      if (element === music) {
+        this.audio.pause();
+        this.audio.currentTime = 0;
+      };
+    });
+
+  }
+
+  delete(music: Music): void {
+
+
+    this._musicService
+      .delete(music.name as string)
+      .subscribe((name: string) => this._musics = this._musics.filter((p: Music) => p.name !== name));
+
+
+    this._musics.forEach((element) => {
+      if (element === music) {
+        this._musics.splice(this._musics.indexOf(music), 1);
+      };
+    });
   }
 
   random(): void {
