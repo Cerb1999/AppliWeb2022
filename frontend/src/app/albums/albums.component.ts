@@ -24,7 +24,6 @@ export class AlbumsComponent implements OnInit {
   }
 
   ajoutAlbum() {
-
     let input = document.getElementById('name-album') as HTMLInputElement ;
 
     if (input.value != "") {
@@ -48,6 +47,7 @@ export class AlbumsComponent implements OnInit {
   _add(album: Album | void): Observable<Album> {
     const create = this._albumService.create(album as Album);
     create.subscribe();
+    this._albums.push(album as Album);
     return create;
   }
 
