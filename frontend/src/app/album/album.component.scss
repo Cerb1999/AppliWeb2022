@@ -1,0 +1,62 @@
+.bg-img {
+  height: 100%;
+  //width: 100%;
+  background-image: url('../../assets/images/casque.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  //background-attachment: fixed;
+  //overflow: hidden;
+}
+
+.content {
+  display: flex;
+  height: 20vh;
+  margin: 0px auto 0px;
+  max-width: 980px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add-music {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.music {
+  box-shadow: orange 4px 4px 4px;
+  padding: 40px;
+  background-color: lightyellow;
+  border-radius: 15px;
+  background-size: cover;
+  width: 20vw;
+}
+
+.my_buttons {
+  float: right;
+}
+
+.music-name {
+  margin-right: 10px;
+  float: left;
+}
+
+.music-button {
+  color: orange;
+  cursor: pointer;
+  transform: scale(2);
+  margin: 0 0.75vw 0 0.75vw;
+}
+
+.list-music {
+  position: center;
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 5px;
+  padding: 10px;
+}
+
+.file-input {
+  margin-left: 2vh;
+}

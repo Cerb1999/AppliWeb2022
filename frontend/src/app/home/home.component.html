@@ -4,14 +4,6 @@
   <span class="file-input"> Ajouter une musique :
   <input type="file" id="fichier" accept=".mp3"  (change)="_add($any($event).target.files)" #fileUpload> </span>
   <div class="content">
-    <!--
-    <ngx-audio-player [playlist]="msaapPlaylist" [displayTitle]="msaapDisplayTitle" [autoPlay]="false"
-    muted="muted" [displayPlaylist]="msaapDisplayPlayList"
-        [displayVolumeControls]="msaapDisplayVolumeControls" [displayRepeatControls]="msaapDisplayRepeatControls"
-        [disablePositionSlider]="msaapDisablePositionSlider" [displayArtist]="msaapDisplayArtist"
-        [displayDuration]="msaapDisplayDuration" [expanded]="true"></ngx-audio-player>
-    -->
-
 
     <div class="list-music" *ngFor="let music of _musics" >
       <a *ngIf="(music.name | json) != '{}'">
