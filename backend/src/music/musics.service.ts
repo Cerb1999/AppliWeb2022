@@ -40,7 +40,21 @@ import { forwardRef } from '@nestjs/common/utils';
         defaultIfEmpty(undefined),
       );
 
-    findOne = (id: string): Observable<MusicEntity> =>
+    findOne = (name: string): Observable<MusicEntity> =>
+      this._musicDao.findOne(name).pipe(
+        catchError((e) =>
+          throwError(() => new UnprocessableEntityException(e.message)),
+        ),
+        mergeMap((music) =>
+          !!music
+            ? of(new MusicEntity(music))
+            : throwError(
+                () => new NotFoundException(`Music with name '${name}' not found`),
+            ),
+        ),
+      );
+
+    findById = (id: string): Observable<MusicEntity> =>
       this._musicDao.findById(id).pipe(
         catchError((e) =>
           throwError(() => new UnprocessableEntityException(e.message)),
@@ -62,12 +76,23 @@ import { forwardRef } from '@nestjs/common/utils';
     );
 
     findAllByAlbumId = (id: string): Observable<MusicEntity[] | void> =>
-        this._albumService.findOne(id).pipe(
+        this._albumService.findById(id).pipe(
+          mergeMap((album) =>
+            !!album
+              ? this.findAllByAlbumName(album.id)
+              : throwError(
+                  () => new NotFoundException(`Musics with album id '${id}' not found`),
+              ),
+          ),
+        );
+
+    findAllByAlbum = (name: string): Observable<MusicEntity[] | void> =>
+        this._albumService.findOne(name).pipe(
           mergeMap((album) =>
             !!album
               ? this.findAllByAlbumName(album.name)
               : throwError(
-                  () => new NotFoundException(`Musics with album id '${id}' not found`),
+                  () => new NotFoundException(`Musics with album name '${name}' not found`),
               ),
           ),
         );
@@ -129,7 +154,7 @@ import { forwardRef } from '@nestjs/common/utils';
 
 
 
-    delete = (id: string): Observable<void> =>
+    deleteById = (id: string): Observable<void> =>
       this._musicDao.findByIdAndRemove(id).pipe(
         catchError((e) =>
           throwError(() => new UnprocessableEntityException(e.message)),
@@ -143,6 +168,19 @@ import { forwardRef } from '@nestjs/common/utils';
         ),
     );
 
+  delete = (name: string): Observable<void> =>
+    this._musicDao.findByNameAndRemove(name).pipe(
+      catchError((e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      mergeMap((musicDeleted) =>
+        !!musicDeleted
+          ? of(undefined)
+          : throwError(
+              () => new NotFoundException(`music with name '${name}' not found`),
+            ),
+      ),
+  );
     
     deleteAlbumInMusicsByName = (name: string): Observable<void> =>
       this._musicDao.findAlbumsByNameAndRemove(name).pipe(
@@ -158,7 +196,8 @@ import { forwardRef } from '@nestjs/common/utils';
         ),
     );
 
-    update = (id: string, music: UpdateMusicDto): Observable<MusicEntity> =>
+  
+    updateById = (id: string, music: UpdateMusicDto): Observable<MusicEntity> =>
       this._musicDao.findByIdAndUpdate(id, music).pipe(
         catchError((e) =>
           e.code === 11000
@@ -179,6 +218,26 @@ import { forwardRef } from '@nestjs/common/utils';
         ),
     );
 
+  update = (name: string, music: UpdateMusicDto): Observable<MusicEntity> =>
+  this._musicDao.findByNameAndUpdate(name, music).pipe(
+    catchError((e) =>
+      e.code === 11000
+        ? throwError(
+            () =>
+              new ConflictException(
+                `Album with name '${music.name}'`,
+              ),
+          )
+        : throwError(() => new UnprocessableEntityException(e.message)),
+    ),
+    mergeMap((musicUpdated) =>
+      !!musicUpdated
+        ? of(new MusicEntity(musicUpdated))
+        : throwError(
+            () => new NotFoundException(`Music with name '${name}' not found`),
+          ),
+    ),
+  );
 
   updateAlbumInMusicsByName = (oldName: string, newName: string): Observable<AlbumEntity> =>
     this._musicDao.findAlbumsByNameAndUpdate(oldName, newName).pipe(

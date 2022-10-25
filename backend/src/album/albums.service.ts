@@ -37,7 +37,7 @@ import { forwardRef } from '@nestjs/common/utils';
         defaultIfEmpty(undefined),
       );
 
-    findOne = (id: string): Observable<AlbumEntity> =>
+    findById = (id: string): Observable<AlbumEntity> =>
       this._albumDao.findById(id).pipe(
         catchError((e) => 
           throwError(() => new UnprocessableEntityException(e.message)),
@@ -50,6 +50,20 @@ import { forwardRef } from '@nestjs/common/utils';
                 ),
           ),
       );
+
+    findOne = (name: string): Observable<AlbumEntity> =>
+    this._albumDao.findOne(name).pipe(
+      catchError((e) => 
+        throwError(() => new UnprocessableEntityException(e.message)),
+        ),
+        mergeMap((album) =>
+          !!album
+            ? of(new AlbumEntity(album))
+            : throwError(
+              () => new NotFoundException(`Album with name '${name}' not found`),
+              ),
+        ),
+    );
 
     findRandom = (): Observable<AlbumEntity | void> =>
       this._albumDao.find().pipe(
@@ -86,7 +100,7 @@ import { forwardRef } from '@nestjs/common/utils';
 
 
 
-    delete = (id: string): Observable<void> =>
+    deleteById = (id: string): Observable<void> =>
       this._albumDao.findByIdAndRemove(id).pipe(
         catchError((e) =>
           throwError(() => new UnprocessableEntityException(e.message)),
@@ -99,8 +113,22 @@ import { forwardRef } from '@nestjs/common/utils';
               ),
         ),
       );
+    
+    deleteBy = (name: string): Observable<void> =>
+      this._albumDao.findByNameAndRemove(name).pipe(
+        catchError((e) =>
+          throwError(() => new UnprocessableEntityException(e.message)),
+        ),
+        mergeMap((albumDeleted) =>
+          !!albumDeleted
+            ? this._musicService.deleteAlbumInMusicsByName(albumDeleted.name)
+            : throwError(
+                () => new NotFoundException(`Album with name '${name}' not found`),
+              ),
+        ),
+      );
 
-    update = (id: string, album: UpdateAlbumDto): Observable<AlbumEntity> =>
+    updateById = (id: string, album: UpdateAlbumDto): Observable<AlbumEntity> =>
       this._albumDao.findById(id).pipe(
         catchError((e) => 
           throwError(() => new UnprocessableEntityException(e.message)),
@@ -128,6 +156,38 @@ import { forwardRef } from '@nestjs/common/utils';
                 )
               : throwError(
                 () => new NotFoundException(`Album with id '${id}' not found`),
+                ),
+          ),
+      )
+
+    updateByName = (name: string, album: UpdateAlbumDto): Observable<AlbumEntity> =>
+      this._albumDao.findOne(name).pipe(
+        catchError((e) => 
+          throwError(() => new UnprocessableEntityException(e.message)),
+          ),
+          mergeMap((old) =>
+            !!old
+              ? this._albumDao.findByNameAndUpdate(name, album).pipe(
+                catchError((e) =>
+                  e.code === 11000
+                    ? throwError(
+                        () =>
+                          new ConflictException(
+                            `Album with name '${album.name}'`,
+                          ),
+                      )
+                    : throwError(() => new UnprocessableEntityException(e.message)),
+                  ),
+                  mergeMap((albumUpdated) =>
+                  !!albumUpdated
+                    ? this._musicService.updateAlbumInMusicsByName(new AlbumEntity(old).name, albumUpdated.name)
+                    : throwError(
+                        () => new NotFoundException(`Album with name '${name}' not found`),
+                      ),
+                ),
+                )
+              : throwError(
+                () => new NotFoundException(`Album with name '${name}' not found`),
                 ),
           ),
       )

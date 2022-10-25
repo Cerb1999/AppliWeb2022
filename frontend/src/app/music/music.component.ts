@@ -74,17 +74,24 @@ export class MusicComponent implements OnInit {
       next: (music: Music) => this._music = music});
   }
 
-  randomByAlbum(id: string): void {
+  randomByAlbum(name: string): void {
+    this._musicService
+    .fetchRandomByAlbum(name)
+    .subscribe({
+      next: (music: Music) => this._music = music});
+  }
+
+  randomByAlbumId(id: string): void {
     this._musicService
     .fetchRandomByAlbum(id)
     .subscribe({
       next: (music: Music) => this._music = music});
   }
-  /*
+  
   update(music: Music): Observable<Music> {
-    return this._musicService.update(music.id, music);
+    return this._musicService.update(music);
   }
-  */
+  
 
   navigate(id: string | undefined): void {
     this._router.navigate([ '/albums', id ]);

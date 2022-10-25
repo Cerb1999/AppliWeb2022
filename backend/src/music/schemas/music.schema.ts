@@ -9,17 +9,22 @@ export type MusicDocument = Music & Document;
   toJSON: {
     virtuals: true,
     transform: (doc: any, ret: any) => {
-      delete ret._id;
+      //delete ret._id;
     },
   },
-  versionKey: false,
+  toObject: {
+    virtuals: true,
+    transform: (doc: any, ret: any) => {
+      //delete ret._id;
+    },
+  },
 })
 export class Music {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     auto: true,
   })
-  _id: any;
+  _id: string;
 
   @Prop({
     type: String,
@@ -44,5 +49,4 @@ export class Music {
 }
 
 export const MusicSchema = SchemaFactory.createForClass(Music);
-
 MusicSchema.index({ name: 1 }, { unique: true });

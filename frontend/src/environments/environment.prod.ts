@@ -6,13 +6,13 @@ export const environment = {
     port: '3000',
     endpoints: {
       allAlbums: '/albums',
-      oneAlbum: '/albums/:id',
+      oneAlbum: '/albums/:name',
       randomAlbum: '/albums/random',
       allMusics: '/musics',
-      OneMusic: '/musics/:id',
+      oneMusic: '/musics/:name',
       randomMusicNoAlbum: '/musics/random',
-      allMusicsOneAlbum: '/musics/albums/:id',
-      randomMusicOneAlbum: '/musics/random/albums/:id',
+      allMusicsOneAlbum: '/musics/albums/:name',
+      randomMusicOneAlbum: '/musics/random/albums/:name',
     },
   },
 };

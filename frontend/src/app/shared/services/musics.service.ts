@@ -33,7 +33,15 @@ export class MusicService {
       );
   }
 
-  fetchByAlbum(id: string): Observable<Music[]> {
+  fetchByAlbum(name: string): Observable<Music[]> {
+    return this._http.get<Music[]>(this._backendURL.allMusicsOneAlbum.replace(':name', name))
+      .pipe(
+        filter((music: Music[]) => !!music),
+        defaultIfEmpty([])
+      );
+  }
+
+  fetchByAlbumId(id: string): Observable<Music[]> {
     return this._http.get<Music[]>(this._backendURL.allMusicsOneAlbum.replace(':id', id))
       .pipe(
         filter((music: Music[]) => !!music),
@@ -48,32 +56,51 @@ export class MusicService {
       );
   }
 
-  fetchRandomByAlbum(id: string): Observable<Music> {
+  fetchRandomByAlbum(name: string): Observable<Music> {
+    return this._http.get<Music>(this._backendURL.randomMusicOneAlbum.replace(':name', name))
+      .pipe(
+        filter((music: Music) => !!music),
+      );
+  }
+
+  fetchRandomByAlbumId(id: string): Observable<Music> {
     return this._http.get<Music>(this._backendURL.randomMusicOneAlbum.replace(':id', id))
       .pipe(
         filter((music: Music) => !!music),
       );
   }
 
-  fetchOne(id: string): Observable<Music> {
-    return this._http.get<Music>(this._backendURL.oneMusic.replace(':id', id));
+  fetchOne(name: string): Observable<Music> {
+    return this._http.get<Music>(this._backendURL.oneMusic.replace(':name', name));
   }
 
   create(music: Music): Observable<any> {
     return this._http.post<Music>(this._backendURL.allMusics, music, this._options());
   }
 
-  update(id: string, music: Music): Observable<any> {
+  updateById(id: string, music: Music): Observable<any> {
     return this._http.put<Music>(this._backendURL.oneMusic.replace(':id', id), music, this._options());
   }
+  
 
-  delete(id: string): Observable<string> {
+  update(music: Music): Observable<any> {
+    return this._http.put<Music>(this._backendURL.oneMusic.replace(':name', music.name), music, this._options());
+  }
+
+  deleteById(id: string): Observable<string> {
     return this._http.delete(this._backendURL.oneMusic.replace(':id', id))
       .pipe(
         map(() => id)
       );
   }
 
+  delete(name: string): Observable<string> {
+    return this._http.delete(this._backendURL.oneMusic.replace(':name', name))
+      .pipe(
+        map(() => name)
+      );
+  }
+  
   private _options(headerList: object = {}): any {
     return { headers: new HttpHeaders(Object.assign({ 'Content-Type': 'application/json' }, headerList)) };
   }

@@ -99,6 +99,7 @@ export class AlbumController {
     return this._albumService.create(createAlbumDto);
   }
 
+
   @ApiOkResponse({
     description: 'The album has been successfully updated',
     type: AlbumEntity,
@@ -127,7 +128,7 @@ export class AlbumController {
     @Param() params: HandlerParams,
     @Body() updateAlbumDto: UpdateAlbumDto,
   ): Observable<AlbumEntity> {
-    return this._albumService.update(params.id, updateAlbumDto);
+    return this._albumService.updateById(params.id, updateAlbumDto);
   }
 
   @ApiNoContentResponse({
@@ -148,6 +149,6 @@ export class AlbumController {
   })
   @Delete(':id')
   delete(@Param() params: HandlerParams): Observable<void> {
-    return this._albumService.delete(params.id);
+    return this._albumService.deleteById(params.id);
   }
 }

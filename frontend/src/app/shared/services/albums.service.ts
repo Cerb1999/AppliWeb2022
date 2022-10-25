@@ -40,21 +40,27 @@ export class AlbumService {
   }
 
   fetchOne(id: string): Observable<Album> {
-    return this._http.get<Album>(this._backendURL.oneAlbum.replace(':id', id));
+    return this._http.get<Album>(this._backendURL.oneAlbum.replace(':name', id));
   }
 
   create(person: Album): Observable<any> {
     return this._http.post<Album>(this._backendURL.allAlbums, person, this._options());
   }
 
+  /*
   update(id: string, album: Album): Observable<any> {
     return this._http.put<Album>(this._backendURL.oneAlbum.replace(':id', id), album, this._options());
   }
+  */
 
-  delete(id: string): Observable<string> {
-    return this._http.delete(this._backendURL.oneAlbum.replace(':id', id))
+  update(album: Album): Observable<any> {
+    return this._http.put<Album>(this._backendURL.oneAlbum.replace(':name', album.name), album, this._options());
+  }
+
+  delete(name: string): Observable<string> {
+    return this._http.delete(this._backendURL.oneAlbum.replace(':name', name))
       .pipe(
-        map(() => id)
+        map(() => name)
       );
   }
 

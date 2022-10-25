@@ -26,6 +26,9 @@ export class MusicDao {
   findById = (id: string): Observable<Music | void> =>
     from(this._musicModel.findById(id).lean());
 
+  findOne = (name: string): Observable<Music | void> =>
+    from(this._musicModel.findOne({'name': name}).lean());
+
   save = (music: CreateMusicDto): Observable<Music> =>
     from(new this._musicModel(music).save());
 
@@ -40,6 +43,18 @@ export class MusicDao {
       }),
     );
 
+  findByNameAndUpdate = (
+      name: string,
+      music: UpdateMusicDto,
+    ): Observable<Music | void> =>
+      from(
+        this._musicModel.findOneAndUpdate({'name': name}, music, {
+          new: true,
+          runValidators: true
+        }),
+    );
+
+
   findByIdAndRemove = (id: string): Observable<Music | void> =>
     from(this._musicModel.findByIdAndRemove(id));
 
@@ -51,6 +66,9 @@ export class MusicDao {
         }
       }}
     ))
+
+  findByNameAndRemove = (name: string): Observable<Music | void> =>
+    from(this._musicModel.findOneAndRemove({}, {'name':name}));
 
   findAlbumsByNameAndUpdate = (oldName: string, newName: string): Observable< any | void> =>
     from(this._musicModel.updateMany(

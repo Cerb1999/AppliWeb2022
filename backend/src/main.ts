@@ -7,6 +7,7 @@ import { FastifyAdapter,
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Config from 'config';
 import { MusicModule } from './music/musics.module';
+import { AlbumModule } from './album/albums.module';
 
 
 async function bootstrap(config: AppConfig, swaggerConfig: SwaggerConfig) {
@@ -20,6 +21,7 @@ async function bootstrap(config: AppConfig, swaggerConfig: SwaggerConfig) {
       new ValidationPipe({
         whitelist: true,
         forbidNonWhitelisted: true,
+        //transform: true,
       }),
     );
 
@@ -31,7 +33,7 @@ async function bootstrap(config: AppConfig, swaggerConfig: SwaggerConfig) {
     .build();
 
     const document = SwaggerModule.createDocument(app, options, {
-      include: [MusicModule],
+      include: [MusicModule, AlbumModule],
     });
 
     SwaggerModule.setup(swaggerConfig.path, app, document);

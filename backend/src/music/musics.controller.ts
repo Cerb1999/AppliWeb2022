@@ -28,6 +28,7 @@ import { HttpInterceptor } from '../interceptors/http.interceptor';
 import { HandlerParams } from 'src/validators/handler-params';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
+import { HandlerParamsN } from 'src/validators/handler-params-name';
 
 @ApiTags('musics')
 @Controller('musics')
@@ -47,6 +48,7 @@ export class MusicController {
     return this._musicService.findAll();
   }
 
+  /*
   @ApiOkResponse({
     description: 'Returns the music for the given "id"',
     type: MusicEntity,
@@ -65,10 +67,35 @@ export class MusicController {
     allowEmptyValue: false,
   })
   @Get(':id')
-  findOne(@Param() params: HandlerParams): Observable<MusicEntity> {
+  findOneById(@Param() params: HandlerParams): Observable<MusicEntity> {
     return this._musicService.findOne(params.id);
   }
+  */
 
+  @ApiOkResponse({
+    description: 'Returns the music for the given "name"',
+    type: MusicEntity,
+  })
+  @ApiNotFoundResponse({
+    description: 'Music with with the given album "name" doesn\'t exist in the database',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: "The request can't be performed in the database",
+  })
+  @ApiBadRequestResponse({ description: 'Parameter provided is not good' })
+  @ApiParam({
+    name: 'name',
+    description: 'Returns a music based on identifier',
+    type: String,
+    allowEmptyValue: false,
+  })
+  @Get(':name')
+  findOne(@Param() params: HandlerParamsN): Observable<MusicEntity> {
+    return this._musicService.findOne(params.name);
+  }
+
+
+  /*
   @ApiOkResponse({
     description: 'Returns the album musics for the given "id"',
     type: MusicEntity,
@@ -90,6 +117,30 @@ export class MusicController {
   findAllByAlbumId(@Param() params: HandlerParams): Observable<MusicEntity[] | void> {
     return this._musicService.findAllByAlbumId(params.id);
   }
+  */
+
+  @ApiOkResponse({
+    description: 'Returns the album musics for the given "name"',
+    type: MusicEntity,
+  })
+  @ApiNotFoundResponse({
+    description: 'Musics with with the given album "name" doesn\'t exist in the database',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: "The request can't be performed in the database",
+  }) 
+  @ApiBadRequestResponse({ description: 'Parameter provided is not good' })
+  @ApiParam({
+    name: 'name',
+    description: 'Returns an array of an album musics based on name',
+    type: String,
+    allowEmptyValue: false,
+  })
+  @Get('albums/:name')
+  findAllByAlbumName(@Param() params: HandlerParamsN): Observable<MusicEntity[] | void> {
+    return this._musicService.findAllByAlbumName(params.name);
+  }
+
 
   @ApiOkResponse({
     description: 'Return a random music ignoring album',
@@ -101,6 +152,19 @@ export class MusicController {
     return this._musicService.findRandomNoAlbum();
   }
 
+
+
+  @ApiOkResponse({
+    description: 'Return a random music by album',
+    type: MusicEntity,
+  })
+  @ApiNoContentResponse({ description: 'There is no music in this album' })
+  @Get('random/albums/:name')
+  findRandomByAlbum(@Param() params: HandlerParamsN): Observable<MusicEntity | void> {
+    return this._musicService.findRandomByAlbumId(params.name);
+  }
+
+  /*
   @ApiOkResponse({
     description: 'Return a random music by album',
     type: MusicEntity,
@@ -110,7 +174,8 @@ export class MusicController {
   findRandomByAlbumId(@Param() params: HandlerParams): Observable<MusicEntity | void> {
     return this._musicService.findRandomByAlbumId(params.id);
   }
-
+  */
+ 
   @ApiCreatedResponse({
     description: 'Success in creating a music',
     type: MusicEntity,
@@ -128,6 +193,7 @@ export class MusicController {
     return this._musicService.create(createMusicDto);
   }
 
+  /*
   @ApiOkResponse({
     description: 'The album has been successfully updated',
     type: MusicEntity,
@@ -152,13 +218,16 @@ export class MusicController {
   })
   @ApiBody({ description: 'Payload to update a music', type: UpdateMusicDto })
   @Put(':id')
-  update(
+  updateById(
     @Param() params: HandlerParams,
     @Body() updateMusicDto: UpdateMusicDto,
   ): Observable<MusicEntity> {
-    return this._musicService.update(params.id, updateMusicDto);
+    return this._musicService.updateById(params.id, updateMusicDto);
   }
+  */
 
+
+  /*
   @ApiNoContentResponse({
     description: 'The music has been successfully deleted',
   })
@@ -176,7 +245,61 @@ export class MusicController {
     allowEmptyValue: false,
   })
   @Delete(':id')
-  delete(@Param() params: HandlerParams): Observable<void> {
-    return this._musicService.delete(params.id);
+  deleteById(@Param() params: HandlerParams): Observable<void> {
+    return this._musicService.deleteById(params.id);
   }
+  */
+
+  @ApiOkResponse({
+    description: 'The album has been successfully updated',
+    type: MusicEntity,
+  })
+  @ApiNotFoundResponse({
+    description: 'Music with the given "name" doesn\'t exist in the database',
+  })
+  @ApiConflictResponse({
+    description: 'The music already exists in the database',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: "The request can't be performed in the database",
+  })
+  @ApiBadRequestResponse({
+    description: 'Parameter and/or payload provided are not good',
+  })
+  @ApiParam({
+    name: 'name',
+    description: 'Unique name of the music in the database',
+    type: String,
+    allowEmptyValue: false,
+  })
+  @ApiBody({ description: 'Payload to update a music', type: UpdateMusicDto })
+  @Put(':name')
+  update(
+    @Param() params: HandlerParamsN,
+    @Body() updateMusicDto: UpdateMusicDto,
+  ): Observable<MusicEntity> {
+    return this._musicService.update(params.name, updateMusicDto);
+  }
+
+  @ApiNoContentResponse({
+    description: 'The music has been successfully deleted',
+  })
+  @ApiNotFoundResponse({
+    description: 'Music with the given "name" doesn\'t exist in the database',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: "The request can't be performed in the database",
+  })
+  @ApiBadRequestResponse({ description: 'Parameter is not good' })
+  @ApiParam({
+    name: 'name',
+    description: 'Unique name of the music in the database',
+    type: String,
+    allowEmptyValue: false,
+  })
+  @Delete(':name')
+  delete(@Param() params: HandlerParamsN): Observable<void> {
+    return this._musicService.delete(params.name);
+  }
+
 }

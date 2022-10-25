@@ -107,7 +107,6 @@ export class HomeComponent implements OnInit {
     this._musics.push(music);
     const create = this._musicService.create(music as Music);
     create.subscribe();
-    this.http.post<Music>(this._backendURL.allPeople, music, { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) });
     return create;
     
   }
@@ -116,17 +115,8 @@ export class HomeComponent implements OnInit {
     
     
     this._musicService
-      .delete(music.id as string)
-      .subscribe((id: string) => this._musics = this._musics.filter((p: Music) => p.id !== id));
-
-    this.http
-      .delete(this._backendURL.oneMusic.replace(':id', music.id))
-      .subscribe({
-        next: () =>
-        (this._musics = this._musics.filter(
-          (m: Music) => m.id !== music.id
-        )),
-      });
+      .delete(music.name as string)
+      .subscribe((name: string) => this._musics = this._musics.filter((p: Music) => p.name !== name));
       
 
     this._musics.forEach((element) => {
