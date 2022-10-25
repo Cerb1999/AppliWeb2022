@@ -68,7 +68,7 @@ export class MusicDao {
     ))
 
   findByNameAndRemove = (name: string): Observable<Music | void> =>
-    from(this._musicModel.findOneAndRemove({}, {'name':name}));
+    from(this._musicModel.findOneAndRemove({'name':name}));
 
   findAlbumsByNameAndUpdate = (oldName: string, newName: string): Observable< any | void> =>
     from(this._musicModel.updateMany(

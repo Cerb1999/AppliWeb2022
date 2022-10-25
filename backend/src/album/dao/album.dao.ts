@@ -54,5 +54,5 @@ export class AlbumDao {
     from(this._albumModel.findByIdAndRemove(id));
 
   findByNameAndRemove = (name: string): Observable<Album | Music | void> =>
-    from(this._albumModel.findOneAndRemove({}, {'name':name}));
+    from(this._albumModel.findOneAndRemove({'name':name}));
 }

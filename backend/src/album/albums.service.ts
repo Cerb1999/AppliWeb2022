@@ -114,7 +114,7 @@ import { forwardRef } from '@nestjs/common/utils';
         ),
       );
     
-    deleteBy = (name: string): Observable<void> =>
+    delete = (name: string): Observable<void> =>
       this._albumDao.findByNameAndRemove(name).pipe(
         catchError((e) =>
           throwError(() => new UnprocessableEntityException(e.message)),
