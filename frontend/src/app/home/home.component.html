@@ -1,7 +1,8 @@
 <div class="bg-img">
 
 
-
+  <span class="file-input"> Ajouter une musique :
+  <input type="file" id="fichier" accept=".mp3"  (change)="_add($any($event).target.files)" #fileUpload> </span>
   <div class="content">
     <!--
     <ngx-audio-player [playlist]="msaapPlaylist" [displayTitle]="msaapDisplayTitle" [autoPlay]="false"
@@ -10,7 +11,7 @@
         [disablePositionSlider]="msaapDisablePositionSlider" [displayArtist]="msaapDisplayArtist"
         [displayDuration]="msaapDisplayDuration" [expanded]="true"></ngx-audio-player>
     -->
-    
+
 
     <div class="list-music" *ngFor="let music of _musics" >
       <a *ngIf="(music.name | json) != '{}'">
@@ -29,24 +30,5 @@
       </div>
       </a>
     </div>
-
-
-
-    <div class="add-music">
-      <!--<label for="fichier">Ajouter une musique (.mp3)</label>-->
-      <input type="file" id="fichier" accept=".mp3" class="file-input" (change)="_add($any($event).target.files)" #fileUpload>
-      <!--
-  <div class="file-upload">
-
-    {{fileName || "Aucun fichier chargé."}}
-    <button mat-button color="primary" class="upload-btn"
-            (click)="fileUpload.click()">
-      <mat-icon>attach_file</mat-icon>
-    </button>
-
-  </div>
-    -->
-    </div>
-
   </div>
 </div>

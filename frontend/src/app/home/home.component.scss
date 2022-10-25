@@ -11,6 +11,7 @@
 
 .content {
   display: flex;
+  height: 20vh;
   margin: 0px auto 0px;
   max-width: 980px;
   flex-direction: column;
@@ -25,20 +26,20 @@
 
 .music {
   box-shadow: orange 4px 4px 4px;
-  display: flex;
   padding: 40px;
   background-color: lightyellow;
-  border-radius: 10px;
+  border-radius: 15px;
   background-size: cover;
   width: 20vw;
 }
 
 .my_buttons {
-  text-align: right;
+  float: right;
 }
 
 .music-name {
   margin-right: 10px;
+  float: left;
 }
 
 .music-button {
@@ -57,7 +58,12 @@
 }
 
 .add-music {
+  float: left;
   position: fixed;
   bottom: 0;
   right: 0;
+}
+
+.file-input {
+  margin-left: 2vh;
 }
