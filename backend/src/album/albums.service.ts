@@ -17,14 +17,18 @@ import { Album } from './albums.types'
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { MusicService } from 'src/music/musics.service';
-import { Music } from 'src/music/musics.types';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { Inject } from '@nestjs/common/decorators';
+import { forwardRef } from '@nestjs/common/utils';
 
   @Injectable()
   export class AlbumService {
     private _albums: Album[];
 
-    constructor(private readonly _albumDao: AlbumDao, private readonly _musicService: MusicService) {}
+    constructor(
+      private readonly _albumDao: AlbumDao, 
+      @Inject(forwardRef(() => MusicService))
+      private readonly _musicService: MusicService) {}
 
     findAll = (): Observable<AlbumEntity[] | void> =>
       this._albumDao.find().pipe(

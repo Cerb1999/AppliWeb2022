@@ -20,12 +20,18 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
 import { AlbumEntity } from 'src/album/entities/album.entity';
+import { AlbumService } from 'src/album/albums.service';
+import { Inject } from '@nestjs/common/decorators';
+import { forwardRef } from '@nestjs/common/utils';
 
   @Injectable()
   export class MusicService {
     private _musics: Music[];
 
-    constructor(private readonly _musicDao: MusicDao) {};
+    constructor(
+      private readonly _musicDao: MusicDao,
+      @Inject(forwardRef(() => AlbumService)) 
+      private readonly _albumService: AlbumService) {};
 
     findAll = (): Observable<MusicEntity[] | void> =>
       this._musicDao.find().pipe(
@@ -45,15 +51,26 @@ import { AlbumEntity } from 'src/album/entities/album.entity';
             : throwError(
                 () => new NotFoundException(`Music with id '${id}' not found`),
             ),
-      ),
+        ),
+      );
+
+    findAllByAlbumName = (name: string): Observable<MusicEntity[] | void> =>
+      this._musicDao.findByAlbumName(name).pipe(
+          filter(Boolean),
+          map((musics) => (musics || []).map((music) => new MusicEntity(music))),
+          defaultIfEmpty(undefined),
     );
 
     findAllByAlbumId = (id: string): Observable<MusicEntity[] | void> =>
-    this._musicDao.findByAlbumId(id).pipe(
-        filter(Boolean),
-        map((album) => (album || []).map((music) => new MusicEntity(music))),
-        defaultIfEmpty(undefined),
-    );
+        this._albumService.findOne(id).pipe(
+          mergeMap((album) =>
+            !!album
+              ? this.findAllByAlbumName(album.name)
+              : throwError(
+                  () => new NotFoundException(`Musics with album id '${id}' not found`),
+              ),
+          ),
+        );
 
     findRandomNoAlbum = (): Observable<MusicEntity | void> =>
       this._musicDao.find().pipe(
@@ -63,13 +80,26 @@ import { AlbumEntity } from 'src/album/entities/album.entity';
         defaultIfEmpty(undefined),
     );
 
-    findRandomByAlbumId = (id: string): Observable<MusicEntity | void> =>
-      this._musicDao.findByAlbumId(id).pipe(
+    findRandomByAlbumName = (name: string): Observable<MusicEntity | void> =>
+      this._musicDao.findByAlbumName(name).pipe(
         filter((music) => !!music && !!music.length),
         map((music) => music[Math.round(Math.random() * music.length)]),
         map((music) => new MusicEntity(music)),
         defaultIfEmpty(undefined),
+  );
+
+    findRandomByAlbumId = (id: string): Observable<MusicEntity | void> =>
+      this._albumService.findOne(id).pipe(
+        mergeMap((album) =>
+          !!album
+            ? this.findRandomByAlbumName(album.name)
+            : throwError(
+                () => new NotFoundException(`Musics with album id '${id}' not found`),
+            ),
+        ),
     );
+
+
 
     private _prepareNewMusic = (
       music: CreateMusicDto,
