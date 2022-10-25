@@ -161,7 +161,7 @@ export class MusicController {
   @ApiNoContentResponse({ description: 'There is no music in this album' })
   @Get('random/albums/:name')
   findRandomByAlbum(@Param() params: HandlerParamsN): Observable<MusicEntity | void> {
-    return this._musicService.findRandomByAlbumId(params.name);
+    return this._musicService.findRandomByAlbumName(params.name);
   }
 
   /*
@@ -175,7 +175,7 @@ export class MusicController {
     return this._musicService.findRandomByAlbumId(params.id);
   }
   */
- 
+
   @ApiCreatedResponse({
     description: 'Success in creating a music',
     type: MusicEntity,
