@@ -16,7 +16,6 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
   fileName: string = '';
   file: File | undefined;
   audio: any;

@@ -219,24 +219,24 @@ import { forwardRef } from '@nestjs/common/utils';
     );
 
   update = (name: string, music: UpdateMusicDto): Observable<MusicEntity> =>
-  this._musicDao.findByNameAndUpdate(name, music).pipe(
-    catchError((e) =>
-      e.code === 11000
-        ? throwError(
-            () =>
-              new ConflictException(
-                `Album with name '${music.name}'`,
-              ),
-          )
-        : throwError(() => new UnprocessableEntityException(e.message)),
-    ),
-    mergeMap((musicUpdated) =>
-      !!musicUpdated
-        ? of(new MusicEntity(musicUpdated))
-        : throwError(
-            () => new NotFoundException(`Music with name '${name}' not found`),
-          ),
-    ),
+    this._musicDao.findByNameAndUpdate(name, music).pipe(
+      catchError((e) =>
+        e.code === 11000
+          ? throwError(
+              () =>
+                new ConflictException(
+                  `Album with name '${music.name}'`,
+                ),
+            )
+          : throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      mergeMap((musicUpdated) =>
+        !!musicUpdated
+          ? of(new MusicEntity(musicUpdated))
+          : throwError(
+              () => new NotFoundException(`Music with name '${name}' not found`),
+            ),
+      ),
   );
 
   updateAlbumInMusicsByName = (oldName: string, newName: string): Observable<AlbumEntity> =>

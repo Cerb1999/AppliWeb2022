@@ -159,7 +159,7 @@ export class MusicController {
     type: MusicEntity,
   })
   @ApiNoContentResponse({ description: 'There is no music in this album' })
-  @Get('random/albums/:name')
+  @Get('albums/random/:name')
   findRandomByAlbum(@Param() params: HandlerParamsN): Observable<MusicEntity | void> {
     return this._musicService.findRandomByAlbumName(params.name);
   }
@@ -170,7 +170,7 @@ export class MusicController {
     type: MusicEntity,
   })
   @ApiNoContentResponse({ description: 'There is no music in this album' })
-  @Get('random/albums/:id')
+  @Get('albums/random/:id')
   findRandomByAlbumId(@Param() params: HandlerParams): Observable<MusicEntity | void> {
     return this._musicService.findRandomByAlbumId(params.id);
   }

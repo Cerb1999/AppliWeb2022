@@ -23,6 +23,11 @@ export class UpdateMusicDto {
   @IsNotEmpty()
   name: string;
 
+
+  @IsOptional()
+  @IsString()
+  addedToApiDate?: string;
+
   @ApiPropertyOptional({
     name: 'albums',
     description: 'albums containing the music'
