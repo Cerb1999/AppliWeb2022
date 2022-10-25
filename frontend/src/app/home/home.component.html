@@ -16,15 +16,17 @@
       <a *ngIf="(music.name | json) != '{}'">
         <div class="music">
           <div class="music-name">
-            id : {{music.id}}
+            {{music.id}}
             {{music.name}}
           </div>
 
-          <mat-icon class="music-button" (click)="playMusic(music)">play_circle_outline</mat-icon>
+          <div class="my_buttons">
+            <mat-icon class="music-button" (click)="playMusic(music)">play_circle_outline</mat-icon>
 
-          <mat-icon class="music-button" (click)="stopMusic(music)">stop_circle_outline</mat-icon>
-          <mat-icon class="music-button" title="Delete" (click)="delete(music)">close</mat-icon>
-        </div>
+            <mat-icon class="music-button" (click)="stopMusic(music)">stop_circle_outline</mat-icon>
+            <mat-icon class="music-button" title="Delete" (click)="delete(music)">close</mat-icon>
+          </div>
+      </div>
       </a>
     </div>
 

@@ -2,9 +2,13 @@
   //position: fixed;
   left: 0;
   right: 0;
-  height: 55px;
+  height: 8vh;
   display: flex;
   align-items: center;
   background-color: #1976d2;
   background-attachment: fixed;
+}
+
+.mat-icon {
+  transform: scale(2.25);
 }

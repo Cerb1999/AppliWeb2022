@@ -30,8 +30,12 @@
   background-color: lightyellow;
   border-radius: 10px;
   background-size: cover;
+  width: 20vw;
 }
 
+.my_buttons {
+  text-align: right;
+}
 
 .music-name {
   margin-right: 10px;
@@ -40,6 +44,8 @@
 .music-button {
   color: orange;
   cursor: pointer;
+  transform: scale(2);
+  margin: 0 0.75vw 0 0.75vw;
 }
 
 .list-music {

@@ -31,6 +31,7 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { MusicService } from 'src/music/musics.service';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { validateHeaderValue } from 'http';
+import { HandlerParamsN } from 'src/validators/handler-params-name';
 
 @ApiTags('albums')
 @Controller('albums')
@@ -51,25 +52,25 @@ export class AlbumController {
   }
 
   @ApiOkResponse({
-    description: 'Returns the album for the given "id"',
+    description: 'Returns the album for the given "name"',
     type: AlbumEntity,
   })
   @ApiNotFoundResponse({
-    description: 'Album with the given "id" doesn\'t exist in the database',
+    description: 'Album with the given "name" doesn\'t exist in the database',
   })
   @ApiUnprocessableEntityResponse({
     description: "The request can't be performed in the database",
   })
   @ApiBadRequestResponse({ description: 'Parameter provided is not good' })
   @ApiParam({
-    name: 'id',
+    name: 'name',
     description: 'Unique identifier of the album in the database',
     type: String,
     allowEmptyValue: false,
   })
-  @Get(':id')
-  findOne(@Param() params: HandlerParams): Observable<AlbumEntity> {
-    return this._albumService.findOne(params.id);
+  @Get(':name')
+  findOne(@Param() params: HandlerParamsN): Observable<AlbumEntity> {
+    return this._albumService.findOne(params.name);
   }
 
   @ApiOkResponse({
@@ -105,7 +106,7 @@ export class AlbumController {
     type: AlbumEntity,
   })
   @ApiNotFoundResponse({
-    description: 'Album with the given "id" doesn\'t exist in the database',
+    description: 'Album with the given "name" doesn\'t exist in the database',
   })
   @ApiConflictResponse({
     description: 'The album already exists in the database',
@@ -117,38 +118,38 @@ export class AlbumController {
     description: 'Parameter and/or payload provided are not good',
   })
   @ApiParam({
-    name: 'id',
-    description: 'Unique identifier of the album in the database',
+    name: 'name',
+    description: 'Unique name of the album in the database',
     type: String,
     allowEmptyValue: false,
   })
   @ApiBody({ description: 'Payload to update an album', type: UpdateAlbumDto })
-  @Put(':id')
+  @Put(':name')
   update(
-    @Param() params: HandlerParams,
+    @Param() params: HandlerParamsN,
     @Body() updateAlbumDto: UpdateAlbumDto,
   ): Observable<AlbumEntity> {
-    return this._albumService.updateById(params.id, updateAlbumDto);
+    return this._albumService.updateByName(params.name, updateAlbumDto);
   }
 
   @ApiNoContentResponse({
     description: 'The album has been successfully deleted',
   })
   @ApiNotFoundResponse({
-    description: 'Album with the given "id" doesn\'t exist in the database',
+    description: 'Album with the given "name" doesn\'t exist in the database',
   })
   @ApiUnprocessableEntityResponse({
     description: "The request can't be performed in the database",
   })
   @ApiBadRequestResponse({ description: 'Parameter is not good' })
   @ApiParam({
-    name: 'id',
-    description: 'Unique identifier of the album in the database',
+    name: 'name',
+    description: 'Unique name of the album in the database',
     type: String,
     allowEmptyValue: false,
   })
-  @Delete(':id')
-  delete(@Param() params: HandlerParams): Observable<void> {
-    return this._albumService.deleteById(params.id);
+  @Delete(':name')
+  delete(@Param() params: HandlerParamsN): Observable<void> {
+    return this._albumService.delete(params.name);
   }
 }
