@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Track } from 'ngx-audio-player';
 import { MusicComponent } from '../music/music.component';
 import { Music } from '../shared/types/musics.types';
-import { Observable } from 'rxjs';
+import { merge, Observable } from 'rxjs';
 import { MusicService } from '../shared/services/musics.service';
 import { interval } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   audio: any;
   id: number;
   private readonly _delete$: EventEmitter<Music>;
+  randMusicName: string;
 
   
   list_musics: MusicComponent[] = [];
@@ -28,21 +29,13 @@ export class HomeComponent implements OnInit {
   _musics: Music[];
   private readonly _backendURL: any;
 
-  constructor(private route: Router, private http: HttpClient, private _musicService: MusicService) {
+  constructor(private route: Router, private http: HttpClient, private _musicService: MusicService, private _route: ActivatedRoute) {
     this.fileName = "";
     this._musics = [];
     this.audio = new Audio();
     this.id = 0;
     this._delete$ = new EventEmitter<Music>();
-
-    this._backendURL = {};
-    // build backend base url
-    let baseUrl = `${environment.backend.protocol}://${environment.backend.host}`;
-    if (environment.backend.port) {
-      baseUrl += `:${environment.backend.port}`;
-    }
-    // @ts-ignore
-    Object.keys(environment.backend.endpoints).forEach(k => this._backendURL[k] = `${baseUrl}${environment.backend.endpoints[k]}`);
+    this.randMusicName = "";
   }
 
   
@@ -50,7 +43,22 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this._musicService
     .fetch()
-    .subscribe({ next: (musics: Music[]) => this._musics = musics });
+      .subscribe({ next: (musics: Music[]) => this._musics = musics });
+
+    this._musicService
+      .fetchRandomNoAlbum()
+      .subscribe({
+        next: (music: Music) => {
+          this.randMusicName = music.name;
+          this.randMusicName = "../../assets/musiques/" + music.name + ".mp3";
+        }
+      });
+  }
+
+  randomPlayMusic(): void {
+    this.audio.src = this.randMusicName;
+    this.audio.load();
+    this.audio.play();
   }
 
   get musics(): Music[] {

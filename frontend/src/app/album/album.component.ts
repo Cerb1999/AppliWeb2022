@@ -16,11 +16,13 @@ export class AlbumComponent implements OnInit {
   private _isAlbum: Boolean;
   _musics: Music[] = [];
   audio: any;
+  randMusicName: string;
 
   constructor(private _router: Router, private _musicService: MusicService, private _albumService: AlbumService, private _route: ActivatedRoute) {
     this._album = {} as Album;
     this._isAlbum = false;
     this.audio = new Audio();
+    this.randMusicName = "";
   }
 
   ngOnInit(): void {
@@ -55,7 +57,25 @@ export class AlbumComponent implements OnInit {
         next: (musics: Music[]) => this._musics = musics,
        
       });
+    /*
+    this._musicService
+      .fetchRandomByAlbum(this.album.name)
+      .subscribe({
+        next: (music: Music) => {
+          this.randMusicName = music.name;
+          this.randMusicName = "../../assets/musiques/" + music.name + ".mp3";
+        }
+      });
+      */
   }
+  /*
+  randomPlayMusic(): void {
+    console.log(this.randMusicName);
+    this.audio.src = this.randMusicName;
+    this.audio.load();
+    this.audio.play();
+  }
+  */
 
   get musics(): Music[] {
     return this._musics;

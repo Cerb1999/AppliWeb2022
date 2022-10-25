@@ -6,7 +6,7 @@
   background-position: center;
   background-repeat: no-repeat;
   //background-attachment: fixed;
-  //overflow: hidden;
+  overflow-y: auto;
 }
 
 .content {
@@ -60,4 +60,15 @@
 
 .file-input {
   margin-left: 2vh;
+}
+
+.rand {
+  color : darkgoldenrod;
+  display: flex;
+  vertical-align:middle;
+  transform: scale(1.5);
+}
+
+.rand:hover{
+    cursor: pointer;
 }

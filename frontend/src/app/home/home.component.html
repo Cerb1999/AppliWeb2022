@@ -1,11 +1,20 @@
 <div class="bg-img">
 
 
-  <span class="file-input"> Ajouter une musique :
-  <input type="file" id="fichier" accept=".mp3"  (change)="_add($any($event).target.files)" #fileUpload> </span>
-  <div class="content">
+  <span class="file-input">
+    Ajouter une musique :
+    <input type="file" id="fichier" accept=".mp3" (change)="_add($any($event).target.files)" #fileUpload>
+  </span>
 
-    <div class="list-music" *ngFor="let music of _musics" >
+  
+  
+
+  <div class="content">
+    <div class="rand">
+      <mat-icon class="rand" (click)="randomPlayMusic()">shuffle</mat-icon>
+    </div>
+
+    <div class="list-music" *ngFor="let music of _musics">
       <a *ngIf="(music.name | json) != '{}'">
         <div class="music">
           <div class="music-name">
@@ -19,7 +28,7 @@
             <mat-icon class="music-button" (click)="stopMusic(music)">stop_circle_outline</mat-icon>
             <mat-icon class="music-button" title="Delete" (click)="delete(music)">close</mat-icon>
           </div>
-      </div>
+        </div>
       </a>
     </div>
   </div>
