@@ -41,7 +41,7 @@ export class AlbumController {
   constructor(private readonly _albumService: AlbumService, private readonly _musicService: MusicService) {}
 
   @ApiOkResponse({
-    description: 'Returns an array of a albums',
+    description: 'Returns an array of albums',
     type: AlbumEntity,
     isArray: true,
   })

@@ -38,7 +38,7 @@ export class MusicController {
   constructor(private readonly _musicService: MusicService) {}
 
   @ApiOkResponse({
-    description: 'Returns an array of a test table',
+    description: 'Returns an array of a music table',
     type: MusicEntity,
     isArray: true,
   })
@@ -195,7 +195,7 @@ export class MusicController {
 
   /*
   @ApiOkResponse({
-    description: 'The album has been successfully updated',
+    description: 'The music has been successfully updated',
     type: MusicEntity,
   })
   @ApiNotFoundResponse({
@@ -251,7 +251,7 @@ export class MusicController {
   */
 
   @ApiOkResponse({
-    description: 'The album has been successfully updated',
+    description: 'The music has been successfully updated',
     type: MusicEntity,
   })
   @ApiNotFoundResponse({

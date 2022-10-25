@@ -11,3 +11,5 @@ environnement dans frontend/src/environments
 frontend : ng serve, localhost 4200
 
 backend : yarn run start:dev, localhost 3000
+
+documentation : 3000/documentation
