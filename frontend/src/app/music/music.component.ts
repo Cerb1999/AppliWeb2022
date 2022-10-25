@@ -93,8 +93,8 @@ export class MusicComponent implements OnInit {
   }
   
 
-  navigate(id: string | undefined): void {
-    this._router.navigate([ '/albums', id ]);
+  navigate(name: string | undefined): void {
+    this._router.navigate([ '/albums/', name ]);
   }
   /*
   newMusic(musicName: string): MusicComponent {

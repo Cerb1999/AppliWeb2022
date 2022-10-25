@@ -35,8 +35,8 @@ export class MusicsComponent implements OnInit {
       .subscribe({ next: (musics: Music[]) => this._musics = musics });
   }
 
-  navigate(id: string | undefined): void {
-    this._router.navigate([ '/albums', id ]);
+  navigate(name: string | undefined): void {
+    this._router.navigate([ '/albums', name ]);
   }
 
 

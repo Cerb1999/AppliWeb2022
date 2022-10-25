@@ -1,5 +1,16 @@
 <div class="bg-img">
-  <div class="content">
-    <p>Je suis dans la page albums</p>
+
+  <div class="list-album" *ngFor="let album of _albums">
+    <a *ngIf="(album.name | json) != '{}'">
+      <div class="album" (click)="navigate(album.name)">
+         {{album.name}}
+      </div>
+    </a>
   </div>
+
+  
+  <input type="text" id="name-album" class="add-album-input" placeholder="Entrez un nom d'album" required/>
+  <mat-icon class="add-album-button" (click)="ajoutAlbum()">library_add</mat-icon>
+  
+
 </div>

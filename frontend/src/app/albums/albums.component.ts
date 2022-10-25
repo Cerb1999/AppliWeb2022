@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./albums.component.scss']
 })
 export class AlbumsComponent implements OnInit {
-  private _albums: Album[];
+  _albums: Album[];
 
   constructor(private _router: Router, private _albumService: AlbumService) {
     this._albums = [];  
@@ -23,18 +23,32 @@ export class AlbumsComponent implements OnInit {
       .subscribe({ next: (albums: Album[]) => this._albums = albums });
   }
 
-  navigate(id: string | undefined): void {
-    this._router.navigate([ '/albums', id ]);
+  ajoutAlbum() {
+
+    let input = document.getElementById('name-album') as HTMLInputElement ;
+
+    if (input.value != "") {
+      const album: Album = {
+        name: input.value
+      }
+      this._add(album);
+    }
+  }
+
+  navigate(name: string | undefined): void {
+    this._router.navigate([ 'albums/', name ]);
   }
 
   delete(album: Album): void {
     this._albumService
-      .delete(album.id as string)
-      .subscribe((id: string) => this._albums = this._albums.filter((a: Album) => a.id !== id));
+      .delete(album.name as string)
+      .subscribe((name: string) => this._albums = this._albums.filter((a: Album) => a.name !== name));
   }
 
-  _add(album: Album | undefined): Observable<Album> {
-    return this._albumService.create(album as Album);
+  _add(album: Album | void): Observable<Album> {
+    const create = this._albumService.create(album as Album);
+    create.subscribe();
+    return create;
   }
 
   get albums(): Album[] {
