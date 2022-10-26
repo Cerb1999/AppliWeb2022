@@ -25,6 +25,10 @@ export class AlbumComponent implements OnInit {
     this.randMusicName = "";
   }
 
+  ngOnDestroy() {
+    this.stopMusicAny();
+  }
+
   ngOnInit(): void {
     merge(
       this._route.params.pipe(
@@ -114,6 +118,7 @@ export class AlbumComponent implements OnInit {
   }
 
   playMusic(music: Music) {
+    this.stopMusicAny();
     this._musics.forEach((element) => {
       if (element === music) {
         let musicURL = "../../assets/musiques/" + music.name + ".mp3";
@@ -134,8 +139,12 @@ export class AlbumComponent implements OnInit {
 
   }
 
-  delete(music: Music): void {
+  stopMusicAny(): void {
+    this.audio.pause()
+  }
 
+  delete(music: Music): void {
+    this.stopMusicAny();
 
     this._musicService
       .delete(music.name as string)

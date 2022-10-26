@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Inject, Input, OnInit, OnDestroy, Output } from '@angular/core';
+import { NavigationEnd, NavigationStart,ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Track } from 'ngx-audio-player';
 import { MusicComponent } from '../music/music.component';
@@ -39,6 +39,9 @@ export class HomeComponent implements OnInit {
   }
 
   
+  ngOnDestroy() {
+    this.stopMusicAny();
+  }
 
   ngOnInit() {
     this._musicService
@@ -56,6 +59,7 @@ export class HomeComponent implements OnInit {
   }
 
   randomPlayMusic(): void {
+    this.stopMusicAny();
     this.audio.src = this.randMusicName;
     this.audio.load();
     this.audio.play();
@@ -67,6 +71,7 @@ export class HomeComponent implements OnInit {
   
 
   playMusic(music: Music) {
+    this.stopMusicAny();
     this._musics.forEach((element) => {
       if (element === music) {
         let musicURL = "../../assets/musiques/" + music.name + ".mp3";
@@ -75,6 +80,10 @@ export class HomeComponent implements OnInit {
         this.audio.play();
       };
     });
+  }
+
+  stopMusicAny(): void {
+    this.audio.pause()
   }
 
   stopMusic(music: Music) {
@@ -120,7 +129,7 @@ export class HomeComponent implements OnInit {
 
   delete(music: Music): void {
     
-    
+    this.stopMusicAny();
     this._musicService
       .delete(music.name as string)
       .subscribe((name: string) => this._musics = this._musics.filter((p: Music) => p.name !== name));
